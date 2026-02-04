@@ -23,7 +23,7 @@ O objetivo do desafio é **identificar riscos**, **propor um redesenho seguro** 
 ### Diagrama de Arquitetura
 
 O diagrama abaixo representa o cenário atual:  
-👉 **[desafios_arq-sec-cloud/aws_diagrama.drawio](desafios_arq-sec-cloud/aws_diagrama.drawio)**
+👉 **[desafios_arq-sec-cloud/aws_diagrama.drawio](aws_diagrama.drawio)**
 
 ---
 
