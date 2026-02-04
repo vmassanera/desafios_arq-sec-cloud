@@ -13,6 +13,8 @@ Os desafios não têm como foco a complexidade extrema ou soluções “enterpri
 ## Estrutura dos Desafios
 
 ### 🔐 Desafio 1 – Análise e Redesenho de Arquitetura (Security Design Review)
+- 📘 [Desafio 01 – Análise de Arquitetura](desafio_01.md)
+
 
 Neste desafio, o candidato receberá um **diagrama de arquitetura AWS contendo vulnerabilidades e más práticas propositalmente inseridas**.
 
@@ -35,6 +37,7 @@ Esse desafio avalia principalmente:
 ---
 
 ### ⚙️ Desafio 2 – Infraestrutura como Código (IaC) com AWS Free Tier
+- ⚙️ [Desafio 02 – Infraestrutura como Código (IaC)](desafio_02.md)
 
 Neste desafio, o candidato deverá **criar um ambiente simples na AWS utilizando Infraestrutura como Código**.
 
