@@ -20,7 +20,7 @@ O objetivo do desafio é **identificar riscos**, **propor um redesenho seguro** 
 - **Administração da AWS por usuários IAM locais**.
 - **Ausência de segmentação adequada**: web tier todo em subnets públicas e banco fora de rede privada.
 
-> Você receberá (ou já recebeu) um **arquivo `draw.io` (diagrams.net)** com o diagrama **As‑Is** contendo essas vulnerabilidades.
+> Arquivo do Draw.io (diagrams.net) encontra-se na raiz do repositório: aws_diagrama.drawio.
 
 ---
 
