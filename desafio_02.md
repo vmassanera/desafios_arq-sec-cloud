@@ -1,195 +1,122 @@
-# Desafio Técnico – Júnior
-## AWS + Infraestrutura como Código (IaC – Free Tier)
+# Desafio 02 – Infraestrutura como Código (IaC) em AWS
 
-### Contexto
-
-Você recebeu a missão de criar um **ambiente simples e seguro na AWS**, utilizando **Infraestrutura como Código (IaC)** e **versionamento em Git**.
-
-O objetivo deste desafio é avaliar **fundamentos de Cloud e Segurança**, não soluções complexas ou ambientes de produção.  
-Por isso, o cenário foi pensado para funcionar **dentro do AWS Free Tier**, evitando custos.
+## Contexto
+Neste desafio, o objetivo é avaliar a capacidade do candidato de **provisionar um ambiente AWS seguro**, utilizando **Infraestrutura como Código (IaC)**, respeitando **boas práticas de segurança**, **organização de código** e **uso consciente de custos**.
 
 ---
 
 ## Objetivo
+Criar, utilizando **IaC (Terraform preferencialmente)**, um ambiente AWS contendo:
 
-Provisionar, usando **IaC (Terraform ou CloudFormation)**, um ambiente AWS contendo:
-
-- ✅ Um **Servidor Web (EC2)**
+- ✅ Um **Servidor Web**
 - ✅ Um **Banco de Dados RDS** em **rede privada**
-- ✅ **Acesso administrativo via Bastion Host**
-- ✅ **Backup dos arquivos de configuração** do servidor Web em um **bucket S3 privado**
+- ✅ **Acesso administrativo (SSH / RDP) restrito**
+- ✅ **Backup dos arquivos de configuração** do servidor web em um **bucket S3**
 - ✅ Código versionado em **Git**
 - ✅ Documentação clara (README)
 
+Sempre que possível, priorize recursos compatíveis com o **AWS Free Tier**, evitando a geração de custos na sua conta AWS.
+
 ---
 
-## Requisitos Técnicos
+## Requisitos Técnicos Obrigatórios
 
 ### 1️⃣ Rede (VPC)
-
-- Criar **1 VPC**
-- Criar pelo menos:
-  - **1 Subnet Pública**
-    - Bastion Host
-  - **1 Subnet Privada**
-    - Servidor Web
-    - RDS
-- Pode usar **uma única AZ** para simplificar
-
----
+- Criar uma **VPC dedicada**
+- Criar ao menos:
+  - **1 Subnet Pública** (Bastion Host)
+  - **1 Subnet Privada** (Servidor Web + RDS)
+- Uso de **uma única AZ** é aceitável
+- **Security Groups** restritivos (menor privilégio)
 
 ### 2️⃣ Servidor Web (EC2)
-
 - Tipo **Free Tier** (`t2.micro` ou `t3.micro`)
-- Deve estar em **subnet privada**
-- **Não deve ter IP público**
-- Sistema operacional de sua escolha (Amazon Linux / Ubuntu)
+- Em **subnet privada**, **sem IP público**
 - Instalar **Apache ou NGINX**
-- Publicar uma página simples
-
----
+- Página simples (ex.: `Hello World`)
 
 ### 3️⃣ Bastion Host (Acesso Administrativo)
-
-- Tipo **Free Tier**
-- Deve ficar em **subnet pública**
-- Acesso **SSH (porta 22)** permitido:
-- Apenas a partir do **seu IP** (ou variável configurável `my_ip`)
-- O acesso SSH ao **Servidor Web deve ser feito somente via Bastion**
-- ❌ **Não é permitido SSH direto da Internet para o Servidor Web**
-
----
+- Tipo **Free Tier** em **subnet pública**
+- **SSH (22)** apenas do **seu IP** (ou variável)
+- **SSH ao Web** somente via Bastion
+- ❌ Sem SSH direto da Internet para o Web
 
 ### 4️⃣ Banco de Dados (RDS)
+- Engine **Free Tier** 
+- **Subnet privada**, `Publicly Accessible = false`
+- SG do RDS permitindo acesso **somente** do SG do Web
 
-- Engine compatível com **Free Tier** (MySQL ou PostgreSQL)
-- Deve estar em **subnet privada**
-- **Publicly Accessible = false**
-- Acesso permitido **somente** a partir do **Security Group do Servidor Web**
-
-> Não é necessário criar aplicação ou estrutura de dados no banco.  
-> Apenas o provisionamento correto do RDS é suficiente.
-
----
-
-### 5️⃣ Backup dos Arquivos de Configuração (S3)
-
-- Criar um **Bucket S3**
-- Configurações obrigatórias:
-- ✅ **Block Public Access habilitado**
-- ✅ **Criptografia em repouso** (SSE‑S3 é suficiente)
-- Criar um **script simples no Servidor Web** que:
-- Copie ou compacte arquivos de configuração do Web Server  
-  (ex.: `/etc/nginx` ou `/etc/apache2`)
-- Envie esses arquivos para o **bucket S3**
-- O backup pode ser:
-- Manual (execução única do script), **ou**
-- Automatizado (via `cron`) – opcional
+### 5️⃣ Backup dos Arquivos de Configuração
+- **Bucket S3 privado** 
+- **Criptografia em repouso** (SSE‑S3 ou SSE‑KMS)
+- **Script** no Web para enviar configs (ex.: `/etc/nginx` ou `/etc/apache2`) ao S3
+- Execução pode ser **manual** ou via **cron** (automatizado)
 
 ---
 
-## Ferramentas
+## **não obrigatórios*, mas fortemente considerados na avaliação*
 
-- ✅ **IaC**: Terraform (preferencial) ou CloudFormation
-- ✅ **AWS CLI**
-- ✅ **Git** para versionamento do código
+- **IAM Role** para EC2 (evitar credenciais estáticas)
+- **Variáveis Terraform** para CIDR, IP de SSH, nomes de recursos
+- Organização em `main.tf`, `variables.tf`, `outputs.tf`
+- **Outputs úteis** (endpoint do RDS, IP do Bastion)
+- **Backup automatizado** com `cron`
+- **SSE‑KMS** no S3 (em vez de SSE‑S3)
 
 ---
 
-## O que **NÃO** é exigido
+## ⭐ Desejável – Pipelines de **CI/CD**
+*(integração contínua e entrega/implantação contínua — OPCIONAL)*
 
-Para manter o desafio adequado ao nível Júnior, **não é necessário**:
+Você pode escolher **Jenkins** **ou** **GitHub Actions** (ou outro de sua preferência) para implementar um pipeline simples de **CI** (validação) e, opcionalmente, **CD** (deploy controlado). Exemplos do que valorizamos:
 
-- Certificado SSL (HTTPS / ACM)
-- Load Balancer
-- Auto Scaling
-- Multi‑AZ
-- KMS customizado
-- CI/CD pipelines
-- Remote state ou módulos avançados de Terraform
+### CI (Integração Contínua)
+- **Qualidade e conformidade**:
+  - `terraform fmt -check` e `terraform validate`
+  - `terraform plan` em Pull Requests
+- **Segurança do código** (ferramentas à sua escolha):
+  - **SAST** (ex.: `semgrep`, `bandit`, etc.)
+  - **Secret scanning** (ex.: `gitleaks`, `trufflehog`)
+  - **IaC scanning** (ex.: `tfsec`, `checkov`)
+- **Pre-commit hooks** (opcional): enforce de formatação/validadores locais
 
-> Caso queira, você pode **descrever no README** como faria essas melhorias no futuro.
+### CD (Entrega/Implantação Contínua) — **opcional**
+- Execução de `terraform apply` **manual** (gate) em branch principal
+- Uso de **assume role com OIDC** (no GitHub Actions) para evitar chaves estáticas
+- Proteções mínimas: aprovação manual, ambiente protegido
+
+> **Observação:** Mantenha o pipeline simples; o objetivo é demonstrar **higiene de código**, **checagens automáticas** e **boas práticas de segurança**.
+
+---
+
+## Itens Bônus (Opcional)
+- **AWS Systems Manager Session Manager** (em vez de SSH)
+- **VPC Endpoint** para acesso privado ao S3 (elimina saída pública no backup)
+- Pequeno **diagrama** da arquitetura
+- Explicação de **evolução para produção** (alto nível)
+
+---
+
+## O que NÃO é exigido
+- HTTPS/ACM, Load Balancer, Auto Scaling, Multi‑AZ
+- Pipelines complexos
+- Ambientes multi‑account
 
 ---
 
 ## Entregáveis
-
-Um repositório Git contendo:
-
-- Código IaC
-- Arquivo `README.md` com:
-- Pré‑requisitos
-- Passo a passo para:
-  - Criar o ambiente
-  - Acessar o Bastion
-  - Acessar o Servidor Web via Bastion
-  - Executar o script de backup
-  - Destruir o ambiente
-- Breve explicação das decisões de segurança adotadas
+- Repositório Git com:
+  - Código IaC
+  - `README.md` com:
+    - Pré‑requisitos
+    - Como **criar** e **destruir** o ambiente
+    - Como **acessar** (Bastion → Web)
+    - Como **executar o backup**
+    - **Decisões de segurança** e **Assunções**
+  - *(Desejável)* Arquivos de **pipeline** (`Jenkinsfile` ou `.github/workflows/*.yml`)
 
 ---
 
-## Critérios de Avaliação
-
-### 🔐 Segurança (40%)
-- Separação correta entre subnet pública e privada
-- Servidor Web e RDS sem exposição direta à Internet
-- SSH apenas via Bastion Host
-- Bucket S3 privado
-
-### ☁️ Infraestrutura como Código (30%)
-- Código organizado e legível
-- Uso de variáveis
-- Estrutura clara
-
-### 📄 Documentação (20%)
-- README claro e objetivo
-- Passos reproduzíveis
-
-### ⭐ Bônus (10%) – Opcional
-- Backup automatizado com `cron`
-- Uso de variáveis para IP e nomes
-- Comentários explicativos no código
-
----
-
-## Tempo Sugerido
-
-- ⏱️ **2 a 4 horas**
-- Não é necessário criar um ambiente perfeito — foque em **clareza e fundamentos**
-
----
-
-## Observação Importante
-
-> Caso algum requisito não seja implementado, explique no README **como você faria** e **por quê**.
-
-O mais importante será avaliar seu **raciocínio**, organização e entendimento dos conceitos básicos de Cloud e Segurança.
-
----
-
-## Destruição do Ambiente
-
-Ao final, garanta que seja possível executar:
-
-```bash
-terraform destroy
-
----
-
-## ✅ Como usar
-1. Crie um repositório no GitHub.
-2. Crie um arquivo chamado **`README.md`**.
-3. Cole **exatamente** o conteúdo acima.
-4. (Opcional) Adicione o diagrama draw.io como referência.
-
-Se quiser, posso:
-- ✅ ajustar o texto para inglês
-- ✅ criar uma versão **Pleno** a partir desse mesmo desafio
-- ✅ alinhar o README com o **starter Terraform** que eu gerei antes
-- ✅ criar uma **rubrica de avaliação interna** para você usar na entrevista
-
-Você agora tem um desafio **bem estruturado, justo e profissional para nível Júnior** 👌
-  
-
-- 
+## Observação Final
+Caso algum requisito não seja implementado, explique no README **como faria** e **por quê**.  
+A clareza do raciocínio e a capacidade de justificar decisões técnicas são tão importantes quanto a implementação.
