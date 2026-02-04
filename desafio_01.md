@@ -14,7 +14,7 @@ O objetivo do desafio é **identificar riscos**, **propor um redesenho seguro** 
 
 - **Tráfego de aplicação em HTTP/80** do público para o **ALB**, e do ALB para **EC2**.
 - **Duas instâncias EC2** (Web-1 e Web-2) em **subnets públicas**, aceitando **HTTP/80**.
-- **SSH/22 exposto à Internet para administração.
+- **SSH/RDP** exposto à Internet para administração.
 - **RDS publicamente acessível** com porta exposta.
 - **Backup de dados pessoais via FTP/21** para serviço externo.
 - **Administração da AWS por usuários IAM locais**.
