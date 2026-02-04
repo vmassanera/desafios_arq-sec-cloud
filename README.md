@@ -70,6 +70,16 @@ Esse desafio avalia principalmente:
 
 ---
 
+## Como Enviar o Desafio
+
+A forma **preferencial** de entrega é por meio de um **link para um repositório Git** (GitHub, GitLab ou Bitbucket), contendo todos os arquivos do(s) desafio(s).
+
+### ✅ Forma recomendada
+- **Link para o seu repositório Git**
+  - Pode ser **público** ou **privado**;
+  - Caso seja privado, conceda acesso aos avaliadores informados no processo.
+
+
 ## Considerações Finais
 
 Este repositório reflete cenários que fazem parte da rotina do Time, e tem como objetivo proporcionar uma avaliação **justa, técnica e alinhada ao dia a dia** da função.
