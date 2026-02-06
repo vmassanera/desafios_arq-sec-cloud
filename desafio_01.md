@@ -14,7 +14,7 @@ O desenho atual apresenta uma topologia funcional com camadas de aplicação, da
 
 Utilize como base o diagrama a seguir (formato draw.io):
 
-👉 **desafios_arq-sec-cloud/aws_diagrama.drawio**  
+👉 **desafios_arq-sec-cloud/docs/imagens/aws_diagrama.drawio**  
 > O arquivo pode ser aberto em https://app.diagrams.net
 
 ---
