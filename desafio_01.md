@@ -48,8 +48,8 @@ Utilize como base o diagrama a seguir (formato draw.io):
 
 ### Contexto Funcional da Integração
 - A API é utilizada para **consulta de informações de usuários** a fim de **gerar relatórios gerenciais** relacionados a:
-  - **Crescimento da base de clientes**; e
-  - **Variação no volume de acessos**.
+- **Crescimento da base de clientes**; e
+- **Variação no volume de acessos**.
 
 ---
 
