@@ -37,7 +37,7 @@ Esse desafio avalia principalmente:
 ---
 
 ### ⚙️ Desafio 2 – Infraestrutura como Código (IaC) com AWS Free Tier
-- ⚙️ [Desafio 02 – Infraestrutura como Código (IaC)](desafio_02.md)
+- ⚙️ [Desafio 02 – Infraestrutura como Código (IaC)](desafio 02.md)
 
 Neste desafio, o candidato deverá **criar um ambiente simples na AWS utilizando Infraestrutura como Código**.
 
